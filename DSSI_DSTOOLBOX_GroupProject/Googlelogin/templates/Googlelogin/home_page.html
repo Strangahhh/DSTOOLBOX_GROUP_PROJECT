@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'Googlelogin/css/home_page.css' %}">
+</head>
+</head>
+<body>
+
+    <header class="header">
+        <a href="#" class="Logo">Logo</a>
+
+        <nav class="navbar">
+            <a href="{% url 'sign_in' %}">Login</a>
+            <a href="#">Sign Up</a>    
+        </nav>
+    </header>
+
+</body>
+</html>

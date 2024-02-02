@@ -11,6 +11,8 @@ import jwt
 def sign_in(request):
     return render(request, 'Googlelogin/sign_in.html')
 
+def home_page(request):
+    return render(request, 'Googlelogin/home_page.html')
 
 @csrf_exempt
 def auth_receiver(request):
@@ -30,9 +32,9 @@ def auth_receiver(request):
     # You could also authenticate the user here using the details from Google (https://docs.djangoproject.com/en/4.2/topics/auth/default/#how-to-log-a-user-in)
     request.session['user_data'] = user_data
 
-    return redirect('sign_in')
+    return redirect('home_page')
 
 
 def sign_out(request):
     del request.session['user_data']
-    return redirect('sign_in')
+    return redirect('home_page')
