@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'Googlelogin/css/response.css' %}">
+</head>
+
+<body>
+    <div class="top-right-icons">
+        {% if request.session.user_data %}
+        <img alt="Profile icon placeholder" height="28" src="{{ request.session.user_data.picture }}" width="28" />
+        <p><a href="/sign-out">Sign out</a></p>
+        {% endif %}
+    </div>
+    </div>
+    </nav>
+    <div class="main-content">
+        <h1>Hello again</h1>
+        <p>Tell me what's on your mind, or pick a suggestion.</p>
+        <div class="input-group mb-3">
+            <input aria-describedby="button-addon2" aria-label="Recipient's username" class="form-control"
+                placeholder="Enter a prompt here" type="text" />
+            <button class="btn btn-outline-secondary" id="button-addon2" type="button">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -15,6 +15,7 @@
         <p>Hi {{ request.session.user_data.given_name }} 🙂</p>
         <p>Your email is {{ request.session.user_data.email }}</p>
         <img src="{{ request.session.user_data.picture }}" alt="User picture">
+        <p>Click here to <a href="/response">Chat page</a></p>
         <p>Click here to <a href="/sign-out">Sign out</a></p>
     </div>
     {% else %}
@@ -30,7 +31,7 @@
             <hr class="left"/> OR <hr class="right"/>
         </div>
         <div id="g_id_onload"
-            data-client_id="669000009206-8s3lbuikfteh47703e4nchosvios9dj9.apps.googleusercontent.com"
+            data-client_id="43037350899-7haccjpnib35g9265340q9hig1ktopgg.apps.googleusercontent.com"
             data-context="signin"
             data-ux_mode="redirect"
             data-login_uri="http://localhost:8000/auth-receiver"

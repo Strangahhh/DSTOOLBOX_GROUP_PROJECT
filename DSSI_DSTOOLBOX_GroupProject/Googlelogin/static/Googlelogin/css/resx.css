@@ -1,0 +1,156 @@
+body {
+    background: #f4f4f4;
+    color: #000000;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.contrainer {
+    position: relative;
+    height: 100%;
+}
+
+.main-content {
+    padding: 2rem;
+    text-align: center;
+}
+
+.main-content h1 {
+    font-size: 3rem;
+    font-weight: 300;
+    margin-bottom: 0.5rem;
+}
+
+.main-content p {
+    font-size: 1rem;
+    font-weight: 300;
+    margin-bottom: 2rem;
+}
+
+.input-group {
+    max-width: 600px;
+    margin: auto;
+    position: absolute; 
+    bottom: 5%; 
+    left: 0; 
+    right: 0; 
+}
+
+.input-group-text {
+    background-color: #202020;
+    border: none;
+    color: #ffffff;
+}
+
+.input-group .form-control:focus {
+    box-shadow: none !important;
+}
+
+.form-control {
+    border-color: #000000(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+.form-control::placeholder {
+    color: #000000;
+}
+
+.btn-outline-secondary {
+    border-color: #ffffff(255, 255, 255, 0.1);
+    color: #000000;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #ffffff;
+    color: #121212;
+}
+
+
+
+/* .sidebar {
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    padding-top: 20px;
+} */
+
+
+.top-right-icons {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+}
+
+.top-right-icons img {
+    margin-left: 10px;
+}
+
+.Logo {
+    font-size: 32px;
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    font-weight: 500;
+    margin-left: 50px;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.profile :hover {
+    border: 2px solid rgb(49, 49, 49);
+}
+
+.profile img {
+    margin-right: 50px;
+    border-radius: 100%;
+}
+
+.menu {
+    font-style: normal;
+    width: 200px;
+    border-color: #ffffff(255, 255, 255, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position : absolute;
+    right: 0;
+    margin-right: 50px;
+    top: 60px;
+    border-radius: 12px;
+    background: white;
+    list-style-type: none;
+    transition: max-height 0.5s, opacity 0.5s ease-out;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+}
+.menu,
+.menu * { 
+    font-style: normal !important; 
+}
+
+.menu.active {
+    max-height: 10em;
+    opacity: 1;
+    overflow: visible; 
+}
+
+.profile-dropdown-list.active {
+    max-height: 500px;
+}
+
+.profile-dropdown-list-item {
+    padding: .5rem 0 0.25rem 1rem;
+}
+
+.profile-dropdown-list-item a {
+    align-items: center;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #000000;
+}
+
+.profile-dropdown-list-item:hover {
+    padding-left: 1.5rem;
+}

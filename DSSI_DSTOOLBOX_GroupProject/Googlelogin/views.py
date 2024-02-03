@@ -32,9 +32,12 @@ def auth_receiver(request):
     # You could also authenticate the user here using the details from Google (https://docs.djangoproject.com/en/4.2/topics/auth/default/#how-to-log-a-user-in)
     request.session['user_data'] = user_data
 
-    return redirect('home_page')
+    return redirect('response')
 
 
 def sign_out(request):
     del request.session['user_data']
     return redirect('home_page')
+
+def response(request):
+    return render(request, 'Googlelogin/resx.html')

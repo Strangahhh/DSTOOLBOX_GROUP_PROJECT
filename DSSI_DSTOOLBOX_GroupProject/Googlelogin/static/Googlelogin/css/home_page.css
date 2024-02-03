@@ -8,6 +8,7 @@
 body {
     min-height: 100vh;
     background: #f4f4f4;
+    font-family: 'Open Sans', sans-serif;
 }
 
 .header {
@@ -28,7 +29,9 @@ body {
     font-size: 32px;
     color: rgb(0, 0, 0);
     text-decoration: none;
-    font-weight: 700;
+    font-weight: 500;
+    margin-left: 50px;
+    font-family: 'Open Sans', sans-serif;
 }
 
 .navbar a {
