@@ -1,5 +1,5 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
     background-color: #f4f4f4;
     display: flex;
     justify-content: center;
@@ -9,44 +9,64 @@ body {
 }
 
 .container {
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
-}
-
-img {
-    border-radius: 50%;
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    margin-top: 10px;
-}
-
-a {
-    color: #007bff;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-.g_id_signin {
-    margin-top: 20px;
+    background-color: #fff;
+    padding: 40px 50px; /* Adjusted padding to match the source */
+    border-radius: 4px; /* Adjusted border-radius to match the source */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Adjusted box-shadow to match the source */
+    text-align: center; /* This is kept from the code to modify */
+    width: 350px; /* Set a fixed width to match the appearance on most screens */
 }
 
 .container h2 {
     color: #333;
-    margin: 10px 0;
+    margin-bottom: 30px; /* Adjusted margin to match the source */
+    font-size: 24px; /* Adjusted font size to match the source */
 }
 
+/* Input fields styles */
+.container input[type="email"] {
+    width: calc(100% - 20px); /* Adjust width to account for padding */
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+/* Submit button styles */
+.container button[type="submit"] {
+    width: calc(100% - 20px); /* Adjust width to account for padding */
+    padding: 15px;
+    border: none;
+    border-radius: 4px;
+    background-color: #4CAF50;
+    color: white;
+    margin: 20px 0;
+    cursor: pointer;
+}
+
+.container button[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+/* Link styles */
+.container a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+    display: block;
+    margin: 20px 0;
+}
+
+.container a:hover {
+    text-decoration: underline;
+}
+
+/* Divider styles */
 .divider {
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
+    margin: 20px 0; /* Adjusted margin to be similar to the source */
 }
 
 .divider hr {
@@ -62,3 +82,10 @@ a:hover {
 .divider hr.right {
     margin-left: 10px;
 }
+
+/* Additional styles for Google Sign In, if needed */
+.g_id_signin {
+    margin-top: 20px;
+}
+
+/* You might want to adjust this part according to the layout of the Google Sign In button */

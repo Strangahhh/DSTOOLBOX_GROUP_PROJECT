@@ -1,55 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Login Page</title>
+    <title>Login</title>
     <script src="https://accounts.google.com/gsi/client" async></script>
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'Googlelogin/css/sign_in.css' %}">
 </head>
+
 <body>
 
-<div class="container">
-    {% if request.session.user_data %}
-    <div>
-        <p>Hi {{ request.session.user_data.given_name }} 🙂</p>
-        <p>Your email is {{ request.session.user_data.email }}</p>
-        <img src="{{ request.session.user_data.picture }}" alt="User picture">
-        <p>Click here to <a href="/response">Chat page</a></p>
-        <p>Click here to <a href="/sign-out">Sign out</a></p>
-    </div>
-    {% else %}
-    <div>
-        <h2>Welcome to Saraa 🙂</h2>
-        <!-- <div class="signup">
-            Don't have an account?
-            <a href="#">
-            Sign up
-            </a> -->
+    <div class="container">
+        <div>
+            <h2>Welcome to Saraa 🙂</h2>
+            <div class="signup">
+                </div>
+                <div class="containerx">
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <input type="email" name="email" placeholder="Enter your email" required>
+                        <button type="submit">Continue</button>
+                    </form>
+                    {% if messages %}
+                    {% for message in messages %}
+                    <p><strong>{{ message }}</strong></p>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="divider">
+                    <hr class="left" /> OR
+                    <hr class="right" />
+                </div>
+                <div id="g_id_onload"
+                    data-client_id="43037350899-7haccjpnib35g9265340q9hig1ktopgg.apps.googleusercontent.com"
+                    data-context="signin" data-ux_mode="redirect" data-login_uri="http://localhost:8000/auth-receiver"
+                    data-itp_support="true">
+                </div>
+                <div class="g_id_signin" data-type="standard" data-shape="pill" data-theme="outline"
+                    data-text="signin_with" data-size="large" data-logo_alignment="left">
+                </div>
         </div>
-        <div class="divider">
-            <hr class="left"/> OR <hr class="right"/>
-        </div>
-        <div id="g_id_onload"
-            data-client_id="43037350899-7haccjpnib35g9265340q9hig1ktopgg.apps.googleusercontent.com"
-            data-context="signin"
-            data-ux_mode="redirect"
-            data-login_uri="http://localhost:8000/auth-receiver"
-            data-itp_support="true">
-        </div>
-
-        <div class="g_id_signin"
-            data-type="standard"
-            data-shape="pill"
-            data-theme="outline"
-            data-text="signin_with"
-            data-size="large"
-            data-logo_alignment="left">
-        </div>
-    </div>
-    {% endif %}
-</div>
 
 </body>
-</html>
 
+</html>

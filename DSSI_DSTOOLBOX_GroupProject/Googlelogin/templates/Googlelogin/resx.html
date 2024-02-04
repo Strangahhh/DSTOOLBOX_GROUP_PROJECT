@@ -26,6 +26,8 @@
       <div class="profile"">
         {% if request.session.user_data %}
         <img alt="Profile icon placeholder" height="38" src="{{ request.session.user_data.picture }}" width="38" />
+        {% else %}
+        <img alt="Profile icon placeholder" height="38" src="{% static 'Googlelogin/assets/image/default-profile.png' %}" width="38" />
         {% endif %}
       </div>
       <div class="menu"onclick="toggle()"">
