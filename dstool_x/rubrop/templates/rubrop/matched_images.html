@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h2>Matched Images</h2>
+
+    {% if matches %}
+    <div class="matched-images">
+        {% for image in matches %}
+        <div class="matched-image">
+            <!-- Display each matched image; adjust the 'src' attribute as needed -->
+            <img src="{{ image.image.url }}" alt="Matched Image" style="width:200px; height:auto;">
+            <p>Event: {{ image.event.name }}</p>
+            <p>Uploaded: {{ image.upload_date }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>No matches found. Try uploading a different image.</p>
+    {% endif %}
+</body>
+
+</html>
