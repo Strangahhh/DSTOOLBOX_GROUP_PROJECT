@@ -16,6 +16,121 @@ import os
 from PIL import Image as PILImage
 import face_recognition
 
+### Event dashboard content ###
+
+@login_required
+def admin_hub_dashboard(request, event_id):
+
+    event = get_object_or_404(Event, event_id=event_id)
+
+    if not request.user == event.created_by and not request.user in event.staff_members.all():
+        return render(request, 'unauthorized.html')
+
+    images = Image.objects.filter(event=event)
+    total_images = images.count()
+    total_faces = FaceEncoding.objects.filter(image__event=event).count()
+
+    context = {
+        'event': event,
+        'total_images': total_images,
+        'total_faces': total_faces,
+    }
+    return render(request, 'rubrop/admin_dashboard.html', context)
+
+@login_required
+def admin_hub_storage(request, event_id):
+        
+    event = get_object_or_404(Event, event_id=event_id)
+
+    if not request.user == event.created_by and not request.user in event.staff_members.all():
+        return render(request, 'unauthorized.html')
+
+    images = Image.objects.filter(event=event)
+    total_images = images.count()
+    total_faces = FaceEncoding.objects.filter(image__event=event).count()
+
+    context = {
+        'event': event,
+        'total_images': total_images,
+        'total_faces': total_faces,
+    }
+    return render(request, 'rubrop/admin_storage.html',context)
+
+@login_required
+def admin_hub_details(request, event_id):
+            
+    event = get_object_or_404(Event, event_id=event_id)
+
+    if not request.user == event.created_by and not request.user in event.staff_members.all():
+        return render(request, 'unauthorized.html')
+
+    images = Image.objects.filter(event=event)
+    total_images = images.count()
+    total_faces = FaceEncoding.objects.filter(image__event=event).count()
+
+    context = {
+        'event': event,
+        'total_images': total_images,
+        'total_faces': total_faces,
+    }
+    return render(request, 'rubrop/admin_details.html', context)
+
+@login_required
+def admin_hub_team(request, event_id):
+                
+    event = get_object_or_404(Event, event_id=event_id)
+
+    if not request.user == event.created_by and not request.user in event.staff_members.all():
+        return render(request, 'unauthorized.html')
+
+    images = Image.objects.filter(event=event)
+    total_images = images.count()
+    total_faces = FaceEncoding.objects.filter(image__event=event).count()
+
+    total_staff = event.staff_members.count()
+
+
+    context = {
+        'event': event,
+        'total_images': total_images,
+        'total_faces': total_faces,
+        'total_staff': total_staff
+    }
+    return render(request, 'rubrop/admin_team.html', context)
+
+### Event management content ###
+
+def home_page_imgslide(request):
+    return render(request, 'rubrop/home_page_imgslide.html')
+
+
+def management_event(request):
+    user_events = Event.objects.filter(created_by=request.user)
+
+    context = {
+        'user_events': user_events
+        }
+    return render(request, 'rubrop/management_event.html', context)
+
+def management_create_event(request):
+    if request.method == 'POST':
+        form = EventForm(request.POST)
+        if form.is_valid():
+            event = form.save(commit=False)
+            event.created_by = request.user
+            event.save()
+            form.save_m2m()  # Since we're using a ManyToMany field for staff_members
+            return redirect(reverse('admin_hub_dashboard', kwargs={'event_id': event.event_id}))
+    else:
+        form = EventForm()
+    
+    context = {
+        'form': form
+    }
+    return render(request, 'rubrop/management_create_event.html', context)
+
+
+
 @login_required
 def home_page(request):
     # Fetch events created by the logged-in user

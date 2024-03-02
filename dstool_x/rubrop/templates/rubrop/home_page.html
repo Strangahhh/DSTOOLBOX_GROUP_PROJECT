@@ -15,9 +15,7 @@
         {% for event in user_events %}
         <li>
             {{ event.name }} - {{ event.date_time|date:"D, d M Y H:i" }}
-            <!-- Link to the event dashboard -->
-            <a href="{% url 'event_dashboard' event_id=event.event_id %}">Dashboard</a>
-            <!-- Add more links as needed -->
+            <a href="{% url 'admin_hub_dashboard' event_id=event.event_id %}">Dashboard</a>
         </li>
         {% endfor %}
     </ul>

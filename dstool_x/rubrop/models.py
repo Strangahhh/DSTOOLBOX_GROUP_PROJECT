@@ -26,7 +26,6 @@ class Image(models.Model):
     def __str__(self):
         return f"Image {self.id} of Event: {self.event.name}"
 
-# Extend User model using a OneToOne link
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     is_cameraman = models.BooleanField(default=False)
@@ -37,12 +36,11 @@ class UserProfile(models.Model):
     
 class FaceEncoding(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    event = models.ForeignKey(Event, on_delete=models.CASCADE, null=True) # Change event_id to 'event'
-    encoded = models.TextField()  # Keep your chosen encoding storage approach
-    image = models.ForeignKey(Image, on_delete=models.CASCADE, related_name='faces')       # Change image_reference to 'image'
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, null=True) 
+    encoded = models.TextField()
+    image = models.ForeignKey(Image, on_delete=models.CASCADE, related_name='faces') 
 
     def save(self, *args, **kwargs):
-        # Check if 'self.encoded' is a NumPy array before converting
         if isinstance(self.encoded, np.ndarray):
-            self.encoded = self.encoded.tolist()  # Convert NumPy array to a list
+            self.encoded = self.encoded.tolist()  
         super().save(*args, **kwargs)
