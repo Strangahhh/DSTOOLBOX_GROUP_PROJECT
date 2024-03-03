@@ -8,6 +8,7 @@ urlpatterns = [
     # Authentication
     path('signup/', views.signup, name='signup'),
     path('login/', LoginView.as_view(template_name='rubrop/login.html'), name='login'),
+    path('logout/', views.logout_view, name='logout'),
 
     # Public Views
     path('', views.home_page_imgslide, name='home_page_img_slide'),

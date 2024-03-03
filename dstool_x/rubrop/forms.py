@@ -6,10 +6,9 @@ from django.contrib.auth.models import User
 class EventForm(forms.ModelForm):
     class Meta:
         model = Event
-        fields = ['name', 'location', 'date_time', 'staff_members']
+        fields = ['name', 'location', 'description', 'date_time']
         widgets = {
             'date_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
-            'staff_members': forms.SelectMultiple()
         }
 
 class ImageUploadForm(forms.ModelForm):

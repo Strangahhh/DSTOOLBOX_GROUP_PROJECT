@@ -15,8 +15,13 @@ import tempfile
 import os
 from PIL import Image as PILImage
 import face_recognition
+from django.contrib.auth import logout
+
+
 
 ### Event dashboard content ###
+
+
 
 @login_required
 def admin_hub_dashboard(request, event_id):
@@ -98,7 +103,11 @@ def admin_hub_team(request, event_id):
     }
     return render(request, 'rubrop/admin_team.html', context)
 
+
+
 ### Event management content ###
+
+
 
 def home_page_imgslide(request):
     return render(request, 'rubrop/home_page_imgslide.html')
@@ -286,3 +295,6 @@ def signup(request):
         form = SignUpForm()
     return render(request, 'rubrop/signup.html', {'form': form})
 
+def logout_view(request):
+    logout(request)
+    return redirect('login')

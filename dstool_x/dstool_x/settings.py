@@ -131,4 +131,4 @@ MEDIA_URL = '/media/'
 DLIB_SHAPE_PREDICTOR_PATH = os.path.join(BASE_DIR, 'models/dlib/shape_predictor_68_face_landmarks.dat')
 DLIB_FACE_RECOGNITION_MODEL_PATH = os.path.join(BASE_DIR, 'models/dlib/dlib_face_recognition_resnet_model_v1.dat')
 
-LOGIN_REDIRECT_URL = "home/"
+LOGIN_REDIRECT_URL = "/home/"

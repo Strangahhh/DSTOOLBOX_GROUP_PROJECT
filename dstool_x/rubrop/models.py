@@ -5,12 +5,13 @@ import uuid
 import numpy as np
 
 class Event(models.Model):
-    event_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False) # Changed field
+    event_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=255, db_index=True)
     location = models.CharField(max_length=255)
+    description = models.CharField(max_length=255, null=True)  # Corrected field name
     date_time = models.DateTimeField()
-    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='created_events')  # Best practice
-    staff_members = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='staffed_events')  # Best practice
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='created_events') 
+    staff_members = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='staffed_events')
 
     def __str__(self):
         return self.name
