@@ -211,7 +211,7 @@ def delete_staff(request, event_id, user_id):
 def home_page_imgslide(request):
     return render(request, 'rubrop/home_page_imgslide.html')
 
-
+@login_required
 def management_event(request):
     user_events = Event.objects.filter(created_by=request.user)
 
@@ -220,6 +220,7 @@ def management_event(request):
         }
     return render(request, 'rubrop/management_event.html', context)
 
+@login_required
 def management_create_event(request):
     if request.method == 'POST':
         form = EventForm(request.POST)
@@ -241,7 +242,7 @@ def management_create_event(request):
 
 ###           Upload&download functions           ###
 
-
+@login_required
 def upload_image_storage(request, event_id):
     event = get_object_or_404(Event, event_id=event_id)
     if request.method == 'POST':

@@ -22,11 +22,19 @@
                         Essential for maximizing efficiency and success in photography workflows.</p>
 
                         <div class="getstart--btn">
+                            {% if user.is_authenticated %}
                             <a href="{% url 'management_event' %}">
                                 <button>
                                     Let's start
                                 </button>
                             </a>
+                        {% else %}
+                            <a href="{% url 'login' %}">
+                                <button>
+                                    Let's start
+                                </button>
+                            </a>
+                        {% endif %}
                         </div>
 
                 </div>
