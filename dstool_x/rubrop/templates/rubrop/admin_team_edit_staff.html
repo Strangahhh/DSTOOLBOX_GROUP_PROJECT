@@ -3,7 +3,6 @@
 {% block content %}
 
 <!-- SIDEBAR -->
-
 <section id="sidebar">
     <a href="{% url 'management_event' %}" class="brand">
         <i class='bx bxs-smile'></i>
@@ -13,7 +12,7 @@
         <li>
             <a href="{% url 'admin_hub_dashboard' event_id=event.event_id %}">
                 <i class='bx bxs-dashboard'></i>
-                <span class="text">Dashboard</span>
+                <span class="text">Dashboard </span>
             </a>
         </li>
         <li>
@@ -75,6 +74,10 @@
                     <li>
                         <a class="active" href="{% url 'admin_hub_team' event_id=event.event_id %}">Team</a>
                     </li>
+                    <li><i class='bx bx-chevron-right'></i></li>
+                    <li>
+                        <a class="active" href="{% url 'add_staff' event_id=event.event_id %}">Add Staff</a>
+                    </li>
                 </ul>
             </div>
             <a href="{% url 'add_staff' event_id=event.event_id %}" class="btn-download">
@@ -86,38 +89,15 @@
         <div class="table-data">
             <div class="order">
                 <div class="head">
-                    <h3>Staff Management</h3>
+                    <h3>Add Staff</h3>
                 </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>User</th>
-                            <th>Email</th>
-                            <th>Role</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for staff in staff_members %}
-                        <tr>
-                            <td>
-                                <p>{{ staff.username }}</p>
-                            </td>
-                            <td>{{ staff.email}}</td>
-                            <td>
-                                <span>Staff</span>
-                            </td>
-                            <td>
-                                <a href="{% url 'delete_staff' event_id=event.event_id user_id=staff.id %}">Delete</a>
-                            </td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="3">No staff members assigned.</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                <div>
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit">Add Staff</button>
+                    </form>
+                </div>
             </div>
         </div>
     </main>

@@ -4,13 +4,19 @@ from django.conf import settings
 import uuid
 import numpy as np
 
+ROLE_CHOICES = (
+    ('editor', 'Editor'),
+    ('photographer', 'Photographer'),
+    ('staff', 'Staff'),
+)
+
 class Event(models.Model):
     event_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=255, db_index=True)
     location = models.CharField(max_length=255)
-    description = models.CharField(max_length=255, null=True)  # Corrected field name
+    description = models.TextField(null=True, blank=True)
     date_time = models.DateTimeField()
-    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='created_events') 
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='created_events')
     staff_members = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='staffed_events')
 
     def __str__(self):
@@ -28,12 +34,11 @@ class Image(models.Model):
         return f"Image {self.id} of Event: {self.event.name}"
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    is_cameraman = models.BooleanField(default=False)
-    is_admin = models.BooleanField(default=False)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    role = models.CharField(max_length=30, choices=ROLE_CHOICES, default='staff')
 
     def __str__(self):
-        return self.user.username
+        return f"{self.user.username}'s profile"
     
 class FaceEncoding(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

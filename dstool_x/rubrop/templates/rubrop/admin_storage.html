@@ -69,7 +69,7 @@
                 <h1>Storage</h1>
                 <ul class="breadcrumb">
                     <li>
-                        <a href="#">Dashboard</a>
+                        <a class="active" href="{% url 'admin_hub_dashboard' event_id=event.event_id %}">Dashboard</a>
                     </li>
                     <li><i class='bx bx-chevron-right'></i></li>
                     <li>
@@ -77,6 +77,10 @@
                     </li>
                 </ul>
             </div>
+            <a href="#" class="btn-download">
+                <i class='bx bx-image-add'></i>
+                <span class="text">Upload Image</span>
+            </a>
             <a href="#" class="btn-download">
                 <i class='bx bxs-cloud-download'></i>
                 <span class="text">Download PDF</span>
@@ -101,7 +105,7 @@
             <li>
                 <i class='bx bxs-camera'></i>
                 <span class="text">
-                    <h3>{{ total_staff }}1</h3>
+                    <h3>{{ total_staff }}</h3>
                     <p>Total Staff</p>
                 </span>
             </li>

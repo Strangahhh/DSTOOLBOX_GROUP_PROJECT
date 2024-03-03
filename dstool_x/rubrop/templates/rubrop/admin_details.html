@@ -69,11 +69,11 @@
                 <h1>Details</h1>
                 <ul class="breadcrumb">
                     <li>
-                        <a href="#">Dashboard</a>
+                        <a class="active" href="{% url 'admin_hub_dashboard' event_id=event.event_id %}">Dashboard</a>
                     </li>
                     <li><i class='bx bx-chevron-right'></i></li>
                     <li>
-                        <a class="active" href="{% url 'admin_hub_storage' event_id=event.event_id %}">Details</a>
+                        <a class="active" href="{% url 'admin_hub_details' event_id=event.event_id %}">Details</a>
                     </li>
                 </ul>
             </div>
@@ -88,6 +88,13 @@
                 <div class="head">
                     <h3>Event Details</h3>
                 </div>
+                <div class="event-details">
+                    <p><strong>Eventname:</strong> {{ event.name }}</p>
+                    <p><strong>Location:</strong> {{ event.location }}</p>
+                    <p><strong>Description:</strong> {{ event.description }}</p>
+                    <p><strong>Event DateTime:</strong> {{ event.date_time|date:"F d, Y H:i" }}</p>
+                    <!-- Displaying the event creator and staff members might require more logic -->
+                </div>
             </div>
             <div class="todo">
                 <div class="head">
@@ -97,9 +104,7 @@
                     <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
                         <div class="carousel-inner">
                             <div class="carousel-item active">
-                                <img class="d-block w-100"
-                                    src="https://images.unsplash.com/photo-1656464868371-602be27fd4c2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1200&q=80"
-                                    alt="First slide">
+                                <img src="data:image/png;base64,{{ qr_code }}" alt="Event QR Code">
                             </div>
                         </div>
                     </div>

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Event, Image
+from .models import Event, Image, UserProfile
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
@@ -25,3 +25,15 @@ class SignUpForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('username', 'email', 'password1', 'password2',)
+
+class AddStaffForm(forms.Form):
+    username = forms.CharField()
+
+class EditStaffRoleForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['role']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['role'].choices = UserProfile.ROLE_CHOICES

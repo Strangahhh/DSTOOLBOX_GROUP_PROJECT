@@ -69,7 +69,7 @@
                 <h1>Dashboard</h1>
                 <ul class="breadcrumb">
                     <li>
-                        <a href="#">Dashboard</a>
+                        <a class="active" href="{% url 'admin_hub_dashboard' event_id=event.event_id %}">Dashboard</a>
                     </li>
                     <li><i class='bx bx-chevron-right'></i></li>
                     <li>
@@ -101,7 +101,7 @@
             <li>
                 <i class='bx bxs-camera'></i>
                 <span class="text">
-                    <h3>{{ total_staff }}1</h3>
+                    <h3>{{ total_staff }}</h3>
                     <p>Total Staff</p>
                 </span>
             </li>
@@ -124,7 +124,6 @@
                     <tbody>
                         <tr>
                             <td>
-                                <img src="img/people.png">
                                 <p>John Doe</p>
                             </td>
                             <td>01-10-2021</td>
@@ -132,7 +131,6 @@
                         </tr>
                         <tr>
                             <td>
-                                <img src="img/people.png">
                                 <p>John Doe</p>
                             </td>
                             <td>01-10-2021</td>
@@ -140,7 +138,6 @@
                         </tr>
                         <tr>
                             <td>
-                                <img src="img/people.png">
                                 <p>John Doe</p>
                             </td>
                             <td>01-10-2021</td>
@@ -148,7 +145,6 @@
                         </tr>
                         <tr>
                             <td>
-                                <img src="img/people.png">
                                 <p>John Doe</p>
                             </td>
                             <td>01-10-2021</td>
@@ -156,7 +152,6 @@
                         </tr>
                         <tr>
                             <td>
-                                <img src="img/people.png">
                                 <p>John Doe</p>
                             </td>
                             <td>01-10-2021</td>

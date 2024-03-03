@@ -19,17 +19,17 @@ urlpatterns = [
     path('home/', views.management_event, name='management_event'),
     path('create/event/', views.management_create_event, name='management_create_event'),
 
-    # Event Dashboard and Actions
-    path('event/<uuid:event_id>/', views.event_dashboard, name='event_dashboard'),
-    path('event/<uuid:event_id>/generate_qr_code/', views.generate_qr_code, name='generate_qr_code'),
-    path('event/<uuid:event_id>/upload_image/', views.upload_image, name='upload_image'),
-    path('event/<uuid:event_id>/upload_and_match_face/', views.upload_and_match_face, name='upload_and_match_face'),
-
     # Admin Hub
     path('adminhub/<uuid:event_id>/dashboard/', views.admin_hub_dashboard, name='admin_hub_dashboard'),
     path('adminhub/<uuid:event_id>/database/', views.admin_hub_storage, name='admin_hub_storage'),
     path('adminhub/<uuid:event_id>/details/', views.admin_hub_details, name='admin_hub_details'),
     path('adminhub/<uuid:event_id>/team/', views.admin_hub_team, name='admin_hub_team'),
+
+    # CRUD Staff
+    path('adminhub/<uuid:event_id>/team/add/', views.add_staff, name='add_staff'),
+    path('adminhub/<uuid:event_id>/team/delete/<int:user_id>/', views.delete_staff, name='delete_staff'),
+    # path('adminhub/<uuid:event_id>/team/edit_role/<int:user_id>/', views.edit_staff_role, name='edit_staff_role'),
 ]
+
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

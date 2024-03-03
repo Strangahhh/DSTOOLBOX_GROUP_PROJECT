@@ -1,11 +1,12 @@
+import base64
 from django.shortcuts import get_object_or_404, render
 from django.shortcuts import render, redirect
-from .forms import EventForm, FaceUploadForm, ImageUploadForm, SignUpForm
+from .forms import AddStaffForm, EditStaffRoleForm, EventForm, FaceUploadForm, ImageUploadForm, SignUpForm
 from django.contrib.auth.decorators import login_required
 import qrcode
 from io import BytesIO
 from django.http import HttpResponse
-from .models import Event, FaceEncoding, Image
+from .models import Event, FaceEncoding, Image, UserProfile
 import dlib
 from django.conf import settings
 import numpy as np
@@ -16,6 +17,7 @@ import os
 from PIL import Image as PILImage
 import face_recognition
 from django.contrib.auth import logout
+from django.contrib.auth.models import User
 
 
 
@@ -35,10 +37,13 @@ def admin_hub_dashboard(request, event_id):
     total_images = images.count()
     total_faces = FaceEncoding.objects.filter(image__event=event).count()
 
+    total_staff = event.staff_members.count()
+    
     context = {
         'event': event,
         'total_images': total_images,
         'total_faces': total_faces,
+        'total_staff': total_staff
     }
     return render(request, 'rubrop/admin_dashboard.html', context)
 
@@ -54,46 +59,7 @@ def admin_hub_storage(request, event_id):
     total_images = images.count()
     total_faces = FaceEncoding.objects.filter(image__event=event).count()
 
-    context = {
-        'event': event,
-        'total_images': total_images,
-        'total_faces': total_faces,
-    }
-    return render(request, 'rubrop/admin_storage.html',context)
-
-@login_required
-def admin_hub_details(request, event_id):
-            
-    event = get_object_or_404(Event, event_id=event_id)
-
-    if not request.user == event.created_by and not request.user in event.staff_members.all():
-        return render(request, 'unauthorized.html')
-
-    images = Image.objects.filter(event=event)
-    total_images = images.count()
-    total_faces = FaceEncoding.objects.filter(image__event=event).count()
-
-    context = {
-        'event': event,
-        'total_images': total_images,
-        'total_faces': total_faces,
-    }
-    return render(request, 'rubrop/admin_details.html', context)
-
-@login_required
-def admin_hub_team(request, event_id):
-                
-    event = get_object_or_404(Event, event_id=event_id)
-
-    if not request.user == event.created_by and not request.user in event.staff_members.all():
-        return render(request, 'unauthorized.html')
-
-    images = Image.objects.filter(event=event)
-    total_images = images.count()
-    total_faces = FaceEncoding.objects.filter(image__event=event).count()
-
     total_staff = event.staff_members.count()
-
 
     context = {
         'event': event,
@@ -101,11 +67,144 @@ def admin_hub_team(request, event_id):
         'total_faces': total_faces,
         'total_staff': total_staff
     }
+    return render(request, 'rubrop/admin_storage.html',context)
+
+@login_required
+def admin_hub_details(request, event_id):
+    event = get_object_or_404(Event, event_id=event_id)
+
+    if not request.user == event.created_by and not request.user in event.staff_members.all():
+        return render(request, 'unauthorized.html')
+
+    images = Image.objects.filter(event=event)
+    total_images = images.count()
+    total_faces = FaceEncoding.objects.filter(image__event=event).count()
+
+    # Generate QR Code
+    url = request.build_absolute_uri('/event/') + str(event_id) + '/upload_and_match_face/'
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+    qr.add_data(url)
+    qr.make(fit=True)
+    img = qr.make_image(fill_color="black", back_color="white")
+    buffer = BytesIO()
+    img.save(buffer, format="PNG")
+    qr_img_base64 = base64.b64encode(buffer.getvalue()).decode()
+
+    # Add QR code to context
+    context = {
+        'event': event,
+        'total_images': total_images,
+        'total_faces': total_faces,
+        'qr_code': qr_img_base64,
+    }
+    return render(request, 'rubrop/admin_details.html', context)
+
+@login_required
+def admin_hub_team(request, event_id):
+    event = get_object_or_404(Event, event_id=event_id)
+
+    if not request.user == event.created_by and not request.user in event.staff_members.all():
+        return render(request, 'unauthorized.html')
+
+    staff_members = event.staff_members.all() 
+
+    context = {
+        'event': event,
+        'total_staff': event.staff_members.count(),
+        'staff_members': staff_members,
+    }
     return render(request, 'rubrop/admin_team.html', context)
 
 
 
-### Event management content ###
+
+###         CRUD STAFF          ###
+
+
+
+
+@login_required
+def add_staff(request, event_id):
+    event = get_object_or_404(Event, event_id=event_id)
+    if request.user != event.created_by:
+        return render(request, 'unauthorized.html')
+    
+    if request.method == 'POST':
+        form = AddStaffForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            try:
+                user = User.objects.get(username=username)
+                event.staff_members.add(user)
+                return redirect('admin_hub_team', event_id=event_id)
+            except User.DoesNotExist:
+                form.add_error('username', 'Username does not exist')
+    else:
+        form = AddStaffForm()
+
+    context = {
+        'form': form,
+        'event': event,
+    }
+
+    return render(request, 'rubrop/admin_team_add_staff.html', context)
+
+# @login_required
+# def edit_staff_role(request, event_id, user_id):
+#     event = get_object_or_404(Event, event_id=event_id)
+#     staff_member = get_object_or_404(User, id=user_id)
+
+#     if request.user != event.created_by:
+#         return render(request, 'unauthorized.html')
+
+#     if request.method == 'POST':
+#         form = EditStaffRoleForm(request.POST, instance=staff_member.profile)  # Corrected line
+#         if form.is_valid():
+#             form.save()
+#             return redirect('admin_hub_team', event_id=event_id)
+#     else:
+#         form = EditStaffRoleForm(instance=staff_member.profile)  # Corrected line
+    
+#     context = {
+#         'form': form,
+#         'event': event,
+#         'staff_member': staff_member,
+#     }
+
+#     return render(request, 'rubrop/admin_team_edit_staff.html', context)
+
+@login_required
+def delete_staff(request, event_id, user_id):
+    event = get_object_or_404(Event, event_id=event_id)
+    staff_member = get_object_or_404(User, id=user_id)
+
+    if request.user != event.created_by:
+        return render(request, 'unauthorized.html')
+
+    if request.method == 'POST':
+        event.staff_members.remove(staff_member)
+        return redirect('admin_hub_team', event_id=event_id)
+
+    context = {
+        'event': event,
+        'staff_member': staff_member,
+    }
+
+    return render(request, 'rubrop/admin_team_delete_staff.html', context)
+
+
+
+
+
+###           Event management content           ###
+
+
+
 
 
 
@@ -137,6 +236,11 @@ def management_create_event(request):
         'form': form
     }
     return render(request, 'rubrop/management_create_event.html', context)
+
+
+
+
+###           content           ###
 
 
 
@@ -188,22 +292,22 @@ def event_dashboard(request, event_id):
     }
     return render(request, 'rubrop/event_dashboard.html', context)
 
-def generate_qr_code(request, event_id):
-    # Construct the URL for the event's page
-    url = request.build_absolute_uri('/event_page/') + str(event_id) + str('/upload_and_match_face/')
-    qr = qrcode.QRCode(
-        version=1,
-        error_correction=qrcode.constants.ERROR_CORRECT_L,
-        box_size=10,
-        border=4,
-    )
-    qr.add_data(url)
-    qr.make(fit=True)
+# def generate_qr_code(request, event_id):
+#     # Construct the URL for the event's page
+#     url = request.build_absolute_uri('/event_page/') + str(event_id) + str('/upload_and_match_face/')
+#     qr = qrcode.QRCode(
+#         version=1,
+#         error_correction=qrcode.constants.ERROR_CORRECT_L,
+#         box_size=10,
+#         border=4,
+#     )
+#     qr.add_data(url)
+#     qr.make(fit=True)
 
-    img = qr.make_image(fill_color="black", back_color="white")
-    response = HttpResponse(content_type="image/png")
-    img.save(response, "PNG")
-    return response
+#     img = qr.make_image(fill_color="black", back_color="white")
+#     response = HttpResponse(content_type="image/png")
+#     img.save(response, "PNG")
+#     return response
 
 @login_required
 def upload_image(request, event_id):
