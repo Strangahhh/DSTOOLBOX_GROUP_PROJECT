@@ -21,7 +21,7 @@ urlpatterns = [
 
     # Admin Hub
     path('adminhub/<uuid:event_id>/dashboard/', views.admin_hub_dashboard, name='admin_hub_dashboard'),
-    path('adminhub/<uuid:event_id>/database/', views.admin_hub_storage, name='admin_hub_storage'),
+    path('adminhub/<uuid:event_id>/storage/', views.admin_hub_storage, name='admin_hub_storage'),
     path('adminhub/<uuid:event_id>/details/', views.admin_hub_details, name='admin_hub_details'),
     path('adminhub/<uuid:event_id>/team/', views.admin_hub_team, name='admin_hub_team'),
 
@@ -29,6 +29,9 @@ urlpatterns = [
     path('adminhub/<uuid:event_id>/team/add/', views.add_staff, name='add_staff'),
     path('adminhub/<uuid:event_id>/team/delete/<int:user_id>/', views.delete_staff, name='delete_staff'),
     # path('adminhub/<uuid:event_id>/team/edit_role/<int:user_id>/', views.edit_staff_role, name='edit_staff_role'),
+
+    # Upload & Download
+    path('adminhub/<uuid:event_id>/storage/upload/image', views.upload_image_storage, name='upload_image_storage'),
 ]
 
 if settings.DEBUG:

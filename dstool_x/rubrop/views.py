@@ -239,6 +239,31 @@ def management_create_event(request):
 
 
 
+###           Upload&download functions           ###
+
+
+def upload_image_storage(request, event_id):
+    event = get_object_or_404(Event, event_id=event_id)
+    if request.method == 'POST':
+        form = ImageUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            image_instance = form.save(commit=False)
+            image_instance.event = event
+            image_instance.save()
+
+            image_path = image_instance.image.path
+            process_and_save_face_encodings(image_path, image_instance)
+            return redirect(reverse('admin_hub_storage', kwargs={'event_id': event.event_id}))
+    else:
+        form = ImageUploadForm()
+
+    context = {
+        'form': form,
+        'event': event
+    }
+
+    return render(request, 'rubrop/admin_storage_upload_image.html', context)
+
 
 ###           content           ###
 
