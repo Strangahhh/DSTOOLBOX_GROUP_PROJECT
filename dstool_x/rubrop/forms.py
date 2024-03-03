@@ -37,3 +37,6 @@ class EditStaffRoleForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['role'].choices = UserProfile.ROLE_CHOICES
+
+class FaceUploadForm(forms.Form):
+    image = forms.ImageField()

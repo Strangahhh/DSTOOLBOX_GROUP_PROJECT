@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    {% load static %}
+    <!-- My CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'rubrop/css/home_page_imgslide.css' %}">
+</head>
+<body>
+    <!-- start: Gallery Section -->
+<section class="gallery-section">
+    <div class="container">
+        <div class="gallery-wrapper">
+            <div class="gallery-content">
+                <div class="content--text">
+
+                    <h1>Welcome To Rubrop</h1>
+                    <p>Find your image on event by use technology face detections</p>
+
+                        <div class="getstart--btn">
+                            <a href="{% url 'user_event_matching' event_id=event.event_id %}">
+                                <button>
+                                    Let's start
+                                </button>
+                            </a>
+                        </div>
+
+                </div>
+                
+            </div>
+            <div class="gallery-images-box">
+                <div class="gallery-images-wrapper">
+                    {% for image_set in image_sets %}
+                    <div class="gallery-images" style="--duration: 10s;">
+                        {% for image in image_set %}
+                        <a href="#">
+                            <img src="{{ image.image.url }}" alt="">
+                        </a>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                    {% for image_set in image_sets %}
+                    <div class="gallery-images" style="--duration: 15s;">
+                        {% for image in image_set %}
+                        <a href="#">
+                            <img src="{{ image.image.url }}" alt="">
+                        </a>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                    {% for image_set in image_sets %}
+                    <div class="gallery-images" style="--duration: 20s;">
+                        {% for image in image_set %}
+                        <a href="#">
+                            <img src="{{ image.image.url }}" alt="">
+                        </a>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                    {% for image_set in image_sets %}
+                    <div class="gallery-images" style="--duration: 10s;">
+                        {% for image in image_set %}
+                        <a href="#">
+                            <img src="{{ image.image.url }}" alt="">
+                        </a>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                    {% for image_set in image_sets %}
+                    <div class="gallery-images" style="--duration: 15s;">
+                        {% for image in image_set %}
+                        <a href="#">
+                            <img src="{{ image.image.url }}" alt="">
+                        </a>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                    {% for image_set in image_sets %}
+                    <div class="gallery-images" style="--duration: 20s;">
+                        {% for image in image_set %}
+                        <a href="#">
+                            <img src="{{ image.image.url }}" alt="">
+                        </a>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- end: Gallery Section -->
+</body>
+</html>

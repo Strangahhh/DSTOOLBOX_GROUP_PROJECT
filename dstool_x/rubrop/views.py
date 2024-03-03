@@ -1,11 +1,14 @@
 import base64
+import io
+import random
+import zipfile
 from django.shortcuts import get_object_or_404, render
 from django.shortcuts import render, redirect
 from .forms import AddStaffForm, EditStaffRoleForm, EventForm, FaceUploadForm, ImageUploadForm, SignUpForm
 from django.contrib.auth.decorators import login_required
 import qrcode
 from io import BytesIO
-from django.http import HttpResponse
+from django.http import FileResponse, HttpResponse
 from .models import Event, FaceEncoding, Image, UserProfile
 import dlib
 from django.conf import settings
@@ -18,6 +21,9 @@ from PIL import Image as PILImage
 import face_recognition
 from django.contrib.auth import logout
 from django.contrib.auth.models import User
+import tempfile
+import zipfile
+from django.core.files.storage import default_storage
 
 
 
@@ -59,14 +65,20 @@ def admin_hub_storage(request, event_id):
     total_images = images.count()
     total_faces = FaceEncoding.objects.filter(image__event=event).count()
 
+    all_image = Image.objects.filter(event=event)
+
+    print(len(all_image))
+
     total_staff = event.staff_members.count()
 
     context = {
         'event': event,
         'total_images': total_images,
         'total_faces': total_faces,
-        'total_staff': total_staff
+        'total_staff': total_staff,
+        'all_image': all_image
     }
+
     return render(request, 'rubrop/admin_storage.html',context)
 
 @login_required
@@ -81,7 +93,7 @@ def admin_hub_details(request, event_id):
     total_faces = FaceEncoding.objects.filter(image__event=event).count()
 
     # Generate QR Code
-    url = request.build_absolute_uri('/event/') + str(event_id) + '/upload_and_match_face/'
+    url = request.build_absolute_uri('/event/') + str(event_id) + '/home/'
     qr = qrcode.QRCode(
         version=1,
         error_correction=qrcode.constants.ERROR_CORRECT_L,
@@ -240,7 +252,69 @@ def management_create_event(request):
 
 
 
+
+
+
+
+###           User           ###
+
+
+
+
+def user_home(request, event_id):
+    # Assuming 'id' is the primary key field for Event
+    event = get_object_or_404(Event, event_id=event_id)
+
+    # Get all images
+    all_images = list(event.images.all())
+
+    # Create a context dictionary to hold the images for each <a> tag
+    context = {
+        'event': event,
+        'image_sets': []
+    }
+
+    # Assuming you have a fixed number of <a> tags you want to populate
+    num_of_a_tags = 12  # Update this number to match the number of <a> tags you have
+
+    if len(all_images) >= num_of_a_tags:
+        selected_images = random.sample(all_images, num_of_a_tags)
+        all_images = [image for image in all_images if image not in selected_images]
+        context['image_sets'].append(selected_images)
+    else:
+        # If the number of images is less than 12, repeat images to fill up the slots
+        selected_images = random.choices(all_images, k=num_of_a_tags)
+        context['image_sets'].append(selected_images)
+
+    return render(request, 'rubrop/home_page_imgslide_user.html', context)
+
+def user_event_matching(request, event_id):
+    event = get_object_or_404(Event, event_id=event_id)
+
+    if request.method == 'POST':
+        form = FaceUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            matches = process_and_match_faces(request.FILES['image'], event)
+            return render(request, 'rubrop/event_matching_face_image.html', {'matches': matches})
+    else:
+        form = FaceUploadForm()
+
+    context = {
+        'form': form,
+        'event': event,
+    }
+    
+    return render(request,'rubrop/event_matching_face_user.html', context)
+
+
+
+
+
+
 ###           Upload&download functions           ###
+
+
+
 
 @login_required
 def upload_image_storage(request, event_id):
@@ -266,7 +340,78 @@ def upload_image_storage(request, event_id):
     return render(request, 'rubrop/admin_storage_upload_image.html', context)
 
 
+def upload_and_match_face(request, event_id):
+    event = get_object_or_404(Event, event_id=event_id)
+    if request.method == 'POST':
+        form = FaceUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            # Process the uploaded image and find matches
+            matches = process_and_match_faces(request.FILES['image'], event)
+            # Display matched images
+            return render(request, 'rubrop/matched_images.html', {'matches': matches})
+    else:
+        form = FaceUploadForm()
+    return render(request, 'rubrop/upload_face.html', {'form': form, 'event': event})
+
+
+def process_and_match_faces(uploaded_image, event):
+    # Initialize an empty list to hold matching images
+    matches = []
+
+    # Convert the uploaded image to a format suitable for face recognition
+    with tempfile.NamedTemporaryFile(suffix='.jpg') as tmp_file:
+        pil_image = PILImage.open(uploaded_image)
+        pil_image.save(tmp_file, format='JPEG')
+        tmp_file.seek(0)  # Go to the beginning of the file
+        uploaded_image = face_recognition.load_image_file(tmp_file)
+
+    # Extract face encodings from the uploaded image
+    uploaded_encodings = face_recognition.face_encodings(uploaded_image)
+
+    # Iterate over each face found in the uploaded image
+    for uploaded_encoding in uploaded_encodings:
+        # Retrieve all FaceEncoding instances associated with the event
+        for face_encoding in FaceEncoding.objects.filter(image__event=event):
+            # Convert the stored encoding from string back to a numpy array
+            stored_encoding = np.fromstring(face_encoding.encoded[1:-1], sep=',')
+            
+            # Use face_recognition to compare the uploaded face with the stored face
+            distance = face_recognition.face_distance([stored_encoding], uploaded_encoding)[0]
+            if distance < 0.4:  # assuming 0.6 as a threshold for face match
+                if face_encoding.image not in matches:
+                    matches.append(face_encoding.image)
+
+    return matches
+
+
+@login_required
+def download_images_as_zip(request, event_id):
+    event = get_object_or_404(Event, event_id=event_id)
+    images = Image.objects.filter(event=event)
+
+    # Create a BytesIO buffer to store the zip file
+    zip_buffer = io.BytesIO()
+
+    # Create a ZipFile object
+    with zipfile.ZipFile(zip_buffer, 'a', zipfile.ZIP_DEFLATED, False) as zip_file:
+        for image in images:
+            # Add each image to the zip file
+            zip_file.writestr(f'{image.image.name}', image.image.read())
+
+    # Seek to the beginning of the buffer
+    zip_buffer.seek(0)
+
+    # Create a Django HttpResponse object to return the zip file
+    response = HttpResponse(zip_buffer, content_type='application/zip')
+    response['Content-Disposition'] = f'attachment; filename={event.name}_images.zip'
+    
+    return response
+
+
 ###           content           ###
+
+
+
 
 
 
@@ -419,8 +564,8 @@ def signup(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)  # Log the user in
-            return redirect('home_page')  # Redirect to a home or dashboard page
+            login(request, user)
+            return redirect('home_page') 
     else:
         form = SignUpForm()
     return render(request, 'rubrop/signup.html', {'form': form})
@@ -428,3 +573,4 @@ def signup(request):
 def logout_view(request):
     logout(request)
     return redirect('login')
+

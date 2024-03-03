@@ -15,6 +15,11 @@ urlpatterns = [
     path('home_page/', views.home_page, name='home_page'),
     path('create_event/', views.create_event, name='create_event'),
 
+    # User
+    path('event/<uuid:event_id>/', views.user_home, name='user_home'),
+    path('event/<uuid:event_id>/matching/', views.user_event_matching, name='user_event_matching'),
+    
+
     # Event Management
     path('home/', views.management_event, name='management_event'),
     path('create/event/', views.management_create_event, name='management_create_event'),
@@ -32,6 +37,8 @@ urlpatterns = [
 
     # Upload & Download
     path('adminhub/<uuid:event_id>/storage/upload/image', views.upload_image_storage, name='upload_image_storage'),
+    path('adminhub/<uuid:event_id>/storage/dowload', views.download_images_as_zip, name='download_images_as_zip'),
+    
 ]
 
 if settings.DEBUG:

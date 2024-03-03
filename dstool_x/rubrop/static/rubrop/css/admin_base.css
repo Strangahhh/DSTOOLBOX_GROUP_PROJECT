@@ -395,6 +395,71 @@ body {
 	cursor: pointer;
 }
 
+/* iamge loop */
+
+#content main .gallery {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#content main .gallery .images {
+    gap: 15px;
+    max-width: 95%;
+    columns: 8 240px ;
+    margin-top: 40px;
+}
+#content main .images img {
+    width: 100%;
+}
+#content main .images .card {
+    display: flex;
+    overflow: hidden;
+    position: relative;
+    list-style: none;
+    margin-bottom: 14px;
+    border-radius: 4px;
+}
+#content main .images .card .details {
+    border-radius: 10px;
+    position: absolute;
+    bottom: -100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 20px;
+    transition: bottom 0.1s ease;
+    background: linear-gradient(to top , rgba(0,0,0,0.7), transparent);
+}
+#content main .images .card:hover .details {
+    bottom: 0;
+}
+#content main .card .details .photographer {
+    color: #fff;
+    display: flex;
+    align-items: center;
+}
+
+#content main .card .details .photographer {
+    color: #fff;
+    display: flex;
+    align-items: center;
+}
+
+#content main .head .details .photographer span {
+    font-size: 1.05rem;
+}
+
+#content main .head .card .details button {
+    cursor: pointer;
+    padding: 2px 4px;
+    font-size: 1.1rem;
+    background: #fff;
+}
+
+/* iamge loop */
+
 #content main .table-data .order {
 	flex-grow: 1;
 	flex-basis: 500px;

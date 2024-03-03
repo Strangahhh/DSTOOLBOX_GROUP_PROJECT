@@ -6,7 +6,7 @@
 
 <section id="sidebar">
     <a href="{% url 'management_event' %}" class="brand">
-        <i class='bx bx-registered' ></i>
+        <i class='bx bx-registered'></i>
         <span class="text">RubropEventHub</span>
     </a>
     <ul class="side-menu top">
@@ -16,7 +16,7 @@
                 <span class="text">Dashboard</span>
             </a>
         </li>
-        <li class="active" >
+        <li class="active">
             <a href="{% url 'admin_hub_storage' event_id=event.event_id %}">
                 <i class='bx bxs-shopping-bag-alt'></i>
                 <span class="text">Storage</span>
@@ -81,9 +81,9 @@
                 <i class='bx bx-image-add'></i>
                 <span class="text">Upload Image</span>
             </a>
-            <a href="#" class="btn-download">
+            <a href="{% url 'download_images_as_zip' event_id=event.event_id %}" class="btn-download">
                 <i class='bx bxs-cloud-download'></i>
-                <span class="text">Download PDF</span>
+                <span class="text">Download All</span>
             </a>
         </div>
 
@@ -117,6 +117,28 @@
                 <div class="head">
                     <h3>Recent Update</h3>
                 </div>
+                <section class="gallery">
+                    <ul class="images">
+                        {% for image in event.images.all %}
+                        <li class="card">
+                            <img src="{{ image.image.url }}" alt="Matched Image">
+                            <div class="details">
+                                <div class="photographer">
+                                    <i class='bx bxs-camera'></i>
+                                    <span>{{ image.upload_date }}</span>
+                                </div>
+                                <div class="download">
+                                    <a href="{{ image.image.url }}" download="CustomFileName">
+                                        <button>
+                                            <!-- <i class='bx bx-download'>DDD</i> -->D
+                                        </button>
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </section>
             </div>
         </div>
     </main>
