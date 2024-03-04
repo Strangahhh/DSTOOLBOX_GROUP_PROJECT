@@ -7,7 +7,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     # Authentication
     path('signup/', views.signup, name='signup'),
-    path('login/', LoginView.as_view(template_name='rubrop/login.html'), name='login'),
+    path('login/', views.login_signup_view, name='login_signup_view'),
     path('logout/', views.logout_view, name='logout'),
 
     # Public Views

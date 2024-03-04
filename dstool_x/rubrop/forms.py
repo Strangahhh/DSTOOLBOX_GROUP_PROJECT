@@ -19,6 +19,10 @@ class ImageUploadForm(forms.ModelForm):
 class FaceUploadForm(forms.Form):
     image = forms.ImageField()
 
+class LoginForm(forms.Form):
+    username = forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput)
+
 class SignUpForm(UserCreationForm):
     email = forms.EmailField(max_length=254, help_text='Required. Inform a valid email address.')
 
