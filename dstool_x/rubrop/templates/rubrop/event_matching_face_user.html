@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matching Face</title>
+    {% load static %}
+    <!-- My CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'rubrop/css/event_matching_face_user.css' %}">
+</head>
+<body>
+
+
+    <section class="content--fr">
+        <div class="content--box">
+            <div class="image-container" onclick="document.getElementById('file-input').click();">
+                <img src="{% static 'rubrop/assets/facescan.svg' %}" width="300px" alt="facescan" style="cursor: pointer;">
+            </div>
+            <div class="form-container">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="file" id="file-input" name="image" style="display:none;" onchange="form.submit();"/>
+                    {{ form.as_p }}
+                    <div class="form-actions">
+                        <button type="submit">Upload Image</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>

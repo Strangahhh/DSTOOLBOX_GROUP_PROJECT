@@ -1,0 +1,146 @@
+{% extends 'rubrop/admin_base.html' %}
+
+{% block content %}
+
+<!-- SIDEBAR -->
+
+<section id="sidebar">
+    <a href="{% url 'management_event' %}" class="brand">
+        <i class='bx bx-registered'></i>
+        <span class="text">RubropEventHub</span>
+    </a>
+    <ul class="side-menu top">
+        <li>
+            <a href="{% url 'admin_hub_dashboard' event_id=event.event_id %}">
+                <i class='bx bxs-dashboard'></i>
+                <span class="text">Dashboard</span>
+            </a>
+        </li>
+        <li class="active">
+            <a href="{% url 'admin_hub_storage' event_id=event.event_id %}">
+                <i class='bx bxs-shopping-bag-alt'></i>
+                <span class="text">Storage</span>
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'admin_hub_details' event_id=event.event_id %}">
+                <i class='bx bxs-doughnut-chart'></i>
+                <span class="text">Details</span>
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'admin_hub_team' event_id=event.event_id %}">
+                <i class='bx bxs-group'></i>
+                <span class="text">Team</span>
+            </a>
+        </li>
+    </ul>
+    <ul class="side-menu">
+        <li>
+            <a href="{% url 'logout' %}" class="logout">
+                <i class='bx bxs-log-out-circle'></i>
+                <span class="text">Logout</span>
+            </a>
+        </li>
+    </ul>
+</section>
+
+<!-- SIDEBAR -->
+
+<!-- CONTENT -->
+
+<section id="content">
+    <!-- NAVBAR -->
+    <nav>
+        <i class='bx bx-menu'></i>
+        <form action="#">
+            <div class="form-input">
+                <input type="search" placeholder="Search...">
+                <button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
+            </div>
+        </form>
+    </nav>
+    <!-- NAVBAR -->
+
+    <!-- MAIN -->
+    <main>
+        <div class="head-title">
+            <div class="left">
+                <h1>Storage</h1>
+                <ul class="breadcrumb">
+                    <li>
+                        <a class="active" href="{% url 'admin_hub_dashboard' event_id=event.event_id %}">Dashboard</a>
+                    </li>
+                    <li><i class='bx bx-chevron-right'></i></li>
+                    <li>
+                        <a class="active" href="{% url 'admin_hub_storage' event_id=event.event_id %}">Storage</a>
+                    </li>
+                </ul>
+            </div>
+            <a href="{% url 'upload_image_storage' event_id=event.event_id %}" class="btn-download">
+                <i class='bx bx-image-add'></i>
+                <span class="text">Upload Image</span>
+            </a>
+            <a href="{% url 'download_images_as_zip' event_id=event.event_id %}" class="btn-download">
+                <i class='bx bxs-cloud-download'></i>
+                <span class="text">Download All</span>
+            </a>
+        </div>
+
+        <ul class="box-info">
+            <li>
+                <i class='bx bxs-image'></i>
+                <span class="text">
+                    <h3>{{ total_images }}</h3>
+                    <p>Total Images</p>
+                </span>
+            </li>
+            <li>
+                <i class='bx bxs-group'></i>
+                <span class="text">
+                    <h3>{{ total_faces }}</h3>
+                    <p>Total Faces Detected</p>
+                </span>
+            </li>
+            <li>
+                <i class='bx bxs-camera'></i>
+                <span class="text">
+                    <h3>{{ total_staff }}</h3>
+                    <p>Total Staff</p>
+                </span>
+            </li>
+        </ul>
+
+
+        <div class="table-data">
+            <div class="order">
+                <div class="head">
+                    <h3>Recent Update</h3>
+                </div>
+                <section class="gallery">
+                    <ul class="images">
+                        {% for image in event.images.all %}
+                        <li class="card">
+                            <img src="{{ image.image.url }}" alt="Matched Image">
+                            <div class="details">
+                                <div class="photographer">
+                                    <i class='bx bxs-camera'></i>
+                                    <span>{{ image.upload_date }}</span>
+                                </div>
+                                <a href="{{ image.image.url }}" class="btn-download" download="CustomFileName">
+                                    <i class="fa fa-download"></i>
+                                </a>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </section>
+            </div>
+        </div>
+    </main>
+    <!-- MAIN -->
+</section>
+
+<!-- CONTENT -->
+
+{% endblock %}

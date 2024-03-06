@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h2>My Events</h2>
+
+    {% if user_events %}
+    <ul>
+        {% for event in user_events %}
+        <li>
+            {{ event.name }} - {{ event.date_time|date:"D, d M Y H:i" }}
+            <a href="{% url 'admin_hub_dashboard' event_id=event.event_id %}">Dashboard</a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>You have no events. <a href="{% url 'create_event' %}">Create one?</a></p>
+    {% endif %}
+</body>
+
+</html>

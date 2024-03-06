@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h2>Event Dashboard: {{ event.name }}</h2>
+    <div>
+        <p><strong>Location:</strong> {{ event.location }}</p>
+        <p><strong>Date and Time:</strong> {{ event.date_time }}</p>
+        <p><strong>Total Images:</strong> {{ total_images }}</p>
+        <p><strong>Total Faces Detected:</strong> {{ total_faces }}</p>
+        <!-- You can add more event-specific data here -->
+    </div>
+
+    <!-- Optionally, list images or other related information -->
+    <div>
+        <h3>Images</h3>
+        {% for image in event.images.all %}
+        <img src="{{ image.image.url }}" alt="Image" width="100" />
+        {% empty %}
+        <p>No images uploaded yet.</p>
+        {% endfor %}
+    </div>
+</body>
+
+</html>l

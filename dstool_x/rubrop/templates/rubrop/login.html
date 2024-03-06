@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rubrop</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'rubrop/css/login.css' %}">
+</head>
+
+<body>
+    <div class="container" id="container">
+        <div class="form-container sign-up-container">
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="signup">
+                <h1>Create Account</h1>
+                {{ signup_form.as_p }}
+                <button type="submit">Sign Up</button>
+            </form>
+        </div>
+        <div class="form-container sign-in-container">
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="login">
+                <h1>Log in</h1>
+                {{ login_form.as_p }}
+                <a href="{% url 'password-reset' %}">Forgot your password?</a>
+                <button type="submit">Log In</button>
+            </form>
+        </div>
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <h1>Welcome Back!</h1>
+                    <p>To keep connected with us please login with your personal info</p>
+                    <button class="ghost" id="signIn">Log In</button>
+                </div>
+                <div class="overlay-panel overlay-right">
+                    <h1>Hello, Friend!</h1>
+                    <p>Enter your personal details and start journey with us</p>
+                    <button class="ghost" id="signUp">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="{% static 'rubrop/js/login.js' %}"></script>
+</html>

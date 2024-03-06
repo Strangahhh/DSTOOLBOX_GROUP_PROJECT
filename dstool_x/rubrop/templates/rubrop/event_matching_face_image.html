@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matched Images</title>
+    {% load static %}
+    <!-- My CSS -->
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" type="text/css" href="{% static 'rubrop/css/event_matching_face_image.css' %}">
+</head>
+<body>
+
+    
+
+    <div class="table-data">
+        <div class="order">
+            <div class="head">
+                <i class='bx bxs-camera'></i>
+                <span>Macthed images</span>
+            </div>       
+        {% if matches %}
+        <div class="head-title">
+            <a href="{% url 'user_event_matching_download_images_as_zip' event_id=event.event_id %}" class="btn-download">
+                <span class="text">Download All</span>
+            </a>
+        </div>
+            <div class="gallery">
+                    <ul class="images">
+                    {% for image in matches %}
+                    <li class="card">
+                        <img src="{{ image.image.url }}" alt="Matched Image">
+                        <div class="details">
+                            <div class="photographer">
+                                <i class='bx bxs-camera'></i>
+                                <span>{{ image.upload_date }}</span>
+                            </div>
+                            <a href="{{ image.image.url }}" download="CustomFileName"><i class='bx bxs-download'></i></a> 
+                        </div>
+                    </li>
+                    {% endfor %}
+                    </ul>
+                </div>
+            {% else %}
+            <div class="tail-title">
+                <a href="javascript:history.back()" class="btn-error">
+                    <i class='bx bx-arrow-back'></i>
+                    <span class="text">ค้นพบใบหน้าไม่สำเร็จ โปรดลองอีกครั้ง</span>
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

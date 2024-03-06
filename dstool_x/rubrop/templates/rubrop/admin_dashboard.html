@@ -1,0 +1,192 @@
+{% extends 'rubrop/admin_base.html' %}
+
+{% block content %}
+
+<!-- SIDEBAR -->
+
+<section id="sidebar">
+    <a href="{% url 'management_event' %}" class="brand">
+        <i class='bx bx-registered' ></i>
+        <span class="text">RubropEventHub</span>
+    </a>
+    <ul class="side-menu top">
+        <li class="active">
+            <a href="{% url 'admin_hub_dashboard' event_id=event.event_id %}">
+                <i class='bx bxs-dashboard'></i>
+                <span class="text">Dashboard</span>
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'admin_hub_storage' event_id=event.event_id %}">
+                <i class='bx bxs-shopping-bag-alt'></i>
+                <span class="text">Storage</span>
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'admin_hub_details' event_id=event.event_id %}">
+                <i class='bx bxs-doughnut-chart'></i>
+                <span class="text">Details</span>
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'admin_hub_team' event_id=event.event_id %}">
+                <i class='bx bxs-group'></i>
+                <span class="text">Team</span>
+            </a>
+        </li>
+    </ul>
+    <ul class="side-menu">
+        <li>
+            <a href="{% url 'logout' %}" class="logout">
+                <i class='bx bxs-log-out-circle'></i>
+                <span class="text">Logout</span>
+            </a>
+        </li>
+    </ul>
+</section>
+
+<!-- SIDEBAR -->
+
+<!-- CONTENT -->
+
+<section id="content">
+    <!-- NAVBAR -->
+    <nav>
+        <i class='bx bx-menu'></i>
+        <form action="#">
+            <div class="form-input">
+                <input type="search" placeholder="Search...">
+                <button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
+            </div>
+        </form>
+    </nav>
+    <!-- NAVBAR -->
+
+    <!-- MAIN -->
+    <main>
+        <div class="head-title">
+            <div class="left">
+                <h1>Dashboard</h1>
+                <ul class="breadcrumb">
+                    <li>
+                        <a class="active" href="{% url 'admin_hub_dashboard' event_id=event.event_id %}">Dashboard</a>
+                    </li>
+                    <li><i class='bx bx-chevron-right'></i></li>
+                    <li>
+                        <a class="active" href="{% url 'admin_hub_dashboard' event_id=event.event_id %}">Home</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <ul class="box-info">
+            <li>
+                <i class='bx bxs-image'></i>
+                <span class="text">
+                    <h3>{{ total_images }}</h3>
+                    <p>Total Images</p>
+                </span>
+            </li>
+            <li>
+                <i class='bx bxs-group'></i>
+                <span class="text">
+                    <h3>{{ total_faces }}</h3>
+                    <p>Total Faces Detected</p>
+                </span>
+            </li>
+            <li>
+                <i class='bx bxs-camera'></i>
+                <span class="text">
+                    <h3>{{ total_staff }}</h3>
+                    <p>Total Staff</p>
+                </span>
+            </li>
+        </ul>
+
+
+        <div class="table-data">
+            <div class="order">
+                <div class="head">
+                    <h3>Recent Update</h3>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Date Order</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <p>John Doe</p>
+                            </td>
+                            <td>01-10-2021</td>
+                            <td><span class="status completed">Completed</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>John Doe</p>
+                            </td>
+                            <td>01-10-2021</td>
+                            <td><span class="status pending">Pending</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>John Doe</p>
+                            </td>
+                            <td>01-10-2021</td>
+                            <td><span class="status process">Process</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>John Doe</p>
+                            </td>
+                            <td>01-10-2021</td>
+                            <td><span class="status pending">Pending</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>John Doe</p>
+                            </td>
+                            <td>01-10-2021</td>
+                            <td><span class="status completed">Completed</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="todo">
+                <div class="head">
+                    <h3>Images</h3>
+                </div>
+                <div class="img--slider">
+                    <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+                        <div class="carousel-inner">
+                            {% for image in event.images.all %}
+                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                <img class="d-block w-100" src="{{ image.image.url }}" alt="Image">
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% if event.images.exists %}
+                        <a class="carousel-control-prev" href="#carouselExampleSlidesOnly" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselExampleSlidesOnly" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- MAIN -->
+</section>
+
+<!-- CONTENT -->
+
+{% endblock %}
